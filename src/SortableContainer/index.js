@@ -191,7 +191,7 @@ export default function sortableContainer(
         node &&
         node.sortableInfo &&
         this.nodeIsChild(node) &&
-        !this.state.sorting
+        !this.sorting
       ) {
         const {useDragHandle} = this.props;
         const {index, collection, disabled} = node.sortableInfo;
@@ -242,7 +242,7 @@ export default function sortableContainer(
       const {distance, pressThreshold} = this.props;
 
       if (
-        !this.state.sorting &&
+        !this.sorting &&
         this._touched &&
         !this._awaitingUpdateBeforeSortStart
       ) {
@@ -431,6 +431,8 @@ export default function sortableContainer(
           sortingIndex: index,
         });
 
+        this.sorting = true;
+
         if (onSortStart) {
           onSortStart({node, index, collection}, event);
         }
@@ -497,6 +499,8 @@ export default function sortableContainer(
         sorting: false,
         sortingIndex: null,
       });
+
+      this.sorting = false;
 
       if (typeof onSortEnd === 'function') {
         onSortEnd(
@@ -578,9 +582,9 @@ export default function sortableContainer(
         translate.x = 0;
       }
 
-      this.helper.style[`${vendorPrefix}Transform`] = `translate3d(${
-        translate.x
-      }px,${translate.y}px, 0)`;
+      this.helper.style[
+        `${vendorPrefix}Transform`
+      ] = `translate3d(${translate.x}px,${translate.y}px, 0)`;
     }
 
     animateNodes() {
@@ -750,9 +754,9 @@ export default function sortableContainer(
             }
           }
         }
-        node.style[`${vendorPrefix}Transform`] = `translate3d(${
-          translate.x
-        }px,${translate.y}px,0)`;
+        node.style[
+          `${vendorPrefix}Transform`
+        ] = `translate3d(${translate.x}px,${translate.y}px,0)`;
       }
 
       if (this.newIndex == null) {
